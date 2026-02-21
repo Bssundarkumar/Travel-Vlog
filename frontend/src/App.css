@@ -1,0 +1,21 @@
+/* Leaflet overrides for dark theme */
+.leaflet-container {
+  background: #1a1a2e;
+}
+
+.custom-city-marker,
+.transport-marker,
+.city-label {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Recording indicator pulse */
+@keyframes recording-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.recording-indicator {
+  animation: recording-pulse 1s ease-in-out infinite;
+}
