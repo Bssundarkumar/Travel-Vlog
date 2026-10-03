@@ -4,6 +4,7 @@ import CityAutocomplete from './components/CityAutocomplete';
 import TransportSelector from './components/TransportSelector';
 import PhotoUploader from './components/PhotoUploader';
 import TravelMap from './components/TravelMap';
+import TripVideoCreator from './components/TripVideoCreator';
 import { TRANSPORT_CONFIG } from './utils/transportIcons';
 import { getDistance } from './utils/cities';
 import './App.css';
@@ -16,6 +17,7 @@ const PHASE_DURATIONS = {
 };
 
 export default function App() {
+  const [mode, setMode] = useState<'trip' | 'route'>('trip');
   const [origin, setOrigin] = useState<City | null>(null);
   const [destination, setDestination] = useState<City | null>(null);
   const [transport, setTransport] = useState<TransportMode>('flight');
@@ -217,9 +219,25 @@ export default function App() {
             <h1 className="text-xl font-bold text-white">Travel Vlog Creator</h1>
             <p className="text-xs text-gray-400">Create animated travel videos</p>
           </div>
+          <nav className="ml-auto flex gap-1 bg-gray-800/60 p-1 rounded-lg text-sm">
+            {([['trip', 'Trip video'], ['route', 'Single route']] as const).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setMode(value)}
+                disabled={animationState.isPlaying}
+                className={`px-3 py-1.5 rounded-md transition-colors ${mode === value
+                  ? 'bg-gray-700 text-white'
+                  : 'text-gray-400 hover:text-gray-200'}`}
+              >
+                {label}
+              </button>
+            ))}
+          </nav>
         </div>
       </header>
 
+      {mode === 'trip' ? <TripVideoCreator /> : (
       <div className="flex-1 flex flex-col lg:flex-row">
         {/* Sidebar Controls */}
         <aside className="w-full lg:w-96 border-b lg:border-b-0 lg:border-r border-gray-800
@@ -337,6 +355,7 @@ export default function App() {
           )}
         </main>
       </div>
+      )}
     </div>
   );
 }
